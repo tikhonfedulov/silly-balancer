@@ -12,4 +12,4 @@ go build ./cmd/server
 ```
 curl http://127.0.0.1:8080
 ```
-One of specified backends will accept it. All edge cases are covered.
+One of available backends will accept it. All edge cases are covered.
