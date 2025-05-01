@@ -1,12 +1,16 @@
 package main
 
 import (
+	"context"
 	"flag"
 	"fmt"
 	"log/slog"
+	"net/http"
 	"net/http/httputil"
 	"net/url"
 	"os"
+	"os/signal"
+	"syscall"
 
 	"go.uber.org/atomic"
 
@@ -48,6 +52,8 @@ func main() {
 		log.Error("shutdown", slog.String("error", err.Error()))
 		os.Exit(1)
 	}
+
+	waitSIGTERM(log, balancer)
 }
 
 func must[T any](v T, err error) T { //nolint:ireturn
@@ -75,4 +81,20 @@ func build(loaded []config.Backend) ([]*loadbalancer.Backend, error) {
 	}
 
 	return out, nil
+}
+
+func waitSIGTERM(
+	log *slog.Logger,
+	toShutdown *http.Server,
+) {
+	quit := make(chan os.Signal, 1)
+	signal.Notify(quit, syscall.SIGTERM, syscall.SIGINT)
+	sig := <-quit
+
+	log.Info(fmt.Sprintf("received signal %v, shutting down", sig))
+
+	err := toShutdown.Shutdown(context.Background())
+	if err != nil {
+		log.Error("error occurred on server shutting down:", "err", err.Error())
+	}
 }
