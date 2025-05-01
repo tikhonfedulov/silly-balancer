@@ -11,6 +11,8 @@ linters:
     - wsl
     - varnamelen # useless in the scope of this project
     - depguard # useless in the scope of this project
+    - nolintlint
+    - exhaustruct # useful linter, but in silly balancer, many structures are initialized with empty values
     - gosec # not necessary in a silly project
     - noctx # not useful
     - nlreturn # code style issues
