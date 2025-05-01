@@ -1,0 +1,58 @@
+version: 2
+
+run:
+  timeout: 5m
+  # include test files
+  tests: true
+
+linters:
+  default: all
+  disable:
+    - wsl
+    - varnamelen # useless in the scope of this project
+    - depguard # useless in the scope of this project
+    - gosec # not necessary in a silly project
+    - noctx # not useful
+    - nlreturn # code style issues
+    - tagliatelle # code style issues
+
+  settings:
+    revive:
+      rules:
+        - name: exported
+          arguments:
+            - "disable-checks-on-constants"
+            - "disable-checks-on-functions"
+            - "disable-checks-on-methods"
+            - "disable-checks-on-types"
+            - "disable-checks-on-variables"
+    gocritic:
+      disabled-checks:
+        - singleCaseSwitch # false positives
+
+issues:
+  # skipping non-go dirs
+  exclude-dirs:
+    - bin
+    - config
+    - debian
+    - docs
+    - scripts
+    - tests
+  include:
+    - EXC0001 # Check return values of os funcs
+    - EXC0004 # govet
+    - EXC0005 # C-style breaks
+
+  exclude-rules:
+    - linters:
+        - lll
+      source: "^//go:generate "
+
+    - linters:
+        - errcheck
+      source: "defer\\s+[^\\s]+.Close()"
+
+    - linters:
+        - revive
+      text: "unexported-return: exported func .+ returns unexported type .+, which can be annoying to use"
