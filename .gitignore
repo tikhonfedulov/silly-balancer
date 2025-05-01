@@ -1,0 +1,29 @@
+# Binaries for programs and plugins
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Test binary, built with `go test -c`
+*.test
+
+# Output of the go coverage tool, specifically when used with LiteIDE
+*.out
+
+# Standard directories
+.idea/
+.vscode/
+.zed/
+
+# Mac OS fix
+.DS_Store/
+
+# Dependency directories (remove the comment below to include it)
+# vendor/
+
+# A special directory for local development. See scripts/install-tools.sh
+.gobincache/
+
+# Artifact created by GNU sed for Mac OS
+*.go-e
