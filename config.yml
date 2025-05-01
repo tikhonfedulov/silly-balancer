@@ -1,0 +1,14 @@
+backends:
+  - url: "http://localhost:8081"
+  - url: "http://localhost:8082"
+  - url: "http://localhost:8083"
+  - url: "http://localhost:8084"
+  - url: "http://localhost:8085"
+
+load-balancer:
+  host: localhost
+  port: 8080
+  algorithm: random # round-robin | least-connections
+
+healthcheck:
+  path: "/health"
