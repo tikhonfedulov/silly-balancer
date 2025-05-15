@@ -44,7 +44,5 @@ func New(
 	return srv
 }
 
-var ErrBackendsUnavailable = errors.New(
-	503, //nolint:mnd
-	"none of backends is available",
-)
+//nolint:gochecknoglobals
+var ErrBackendsUnavailable = errors.New(http.StatusServiceUnavailable, "no available backends found")
